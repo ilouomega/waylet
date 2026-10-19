@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f7f8">
+  <title>Waylet | Tu app de ahorro</title>
+  <script src="//cdn.evgnet.com/beacon/CUENTA/DATASET/scripts/evergage.min.js"></script>
+  <style>
+    :root{--navy:#00243d;--red:#ed174c;--orange:#ff6b22;--muted:#58738a;--line:#dce7ef;--soft:#f6f6f8;--white:#fff}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{max-width:480px;height:100vh;margin:0 auto;overflow:hidden;background:#e9edf0;color:var(--navy);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    .app{height:100%;max-width:480px;margin:0 auto;background:#fff;position:relative;overflow:hidden;box-shadow:0 0 32px #001b2b22}
+    .topbar{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#fff;position:absolute;inset:0 0 auto;z-index:5;border-bottom:1px solid #f0f2f4}
+    .brand{font-size:27px;font-weight:850;letter-spacing:-1.5px;color:var(--navy)}.brand span{color:var(--red)}
+    .login-btn{border:0;border-radius:22px;padding:10px 17px;background:linear-gradient(110deg,var(--orange),var(--red));color:#fff;font-weight:700;box-shadow:0 4px 12px #ed174c30}
+    .views{position:absolute;inset:72px 0 84px;overflow:hidden}
+    .view{display:none;position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;background:#fff;padding-bottom:24px}
+    .view::-webkit-scrollbar{display:none}.view.active{display:block}
+    .home-hero{padding:21px 18px 22px;background:linear-gradient(145deg,#ec0751 0%,#ff8123 48%,#fff 48.2%);border-radius:0 0 35% 0;min-height:226px}
+    .summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-top:39px}
+    .summary-card{min-height:92px;text-align:left;border:0;border-radius:22px;padding:14px 12px;background:#ffffffdf;color:var(--navy);box-shadow:0 8px 18px #00172c12}
+    .summary-card strong{display:block;font-size:15px;font-weight:600;margin-bottom:12px}.summary-card span{font-size:23px;font-weight:500;white-space:nowrap}
+    .summary-card.plan{background:var(--navy);color:#fff}
+    .home-content{padding:0 0 18px}.promo-title{font-size:23px;margin:20px 20px 15px;font-weight:750}
+    .carousel{display:flex;gap:14px;overflow-x:auto;padding:0 18px 8px;scroll-snap-type:x mandatory;scrollbar-width:none}.carousel::-webkit-scrollbar{display:none}
+    .carousel img{width:84%;flex:0 0 84%;height:auto;border-radius:23px;object-fit:cover;scroll-snap-align:center;border:1px solid var(--line)}
+    .dots{display:flex;justify-content:center;align-items:center;gap:8px;padding:14px}.dots i{width:7px;height:7px;border-radius:50%;background:#8aa4b8}.dots i:first-child{width:36px;border-radius:8px;background:var(--navy)}
+    .quick-links{padding:0 18px}.quick-links h2,.section-title{font-size:21px;margin:19px 0 12px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.quick-tile{height:90px;border:1px solid var(--line);border-radius:20px;padding:16px;text-align:left;color:var(--navy);font-size:17px;font-weight:700;background:#fff}
+    .quick-tile span{display:block;font-size:26px;margin-top:6px}.screen-images{padding:0}.screen-images img{display:block;width:100%;height:auto}
+    .airbnb-link{display:flex;align-items:center;justify-content:space-between;width:calc(100% - 32px);margin:14px 16px;padding:15px 18px;border:0;border-radius:18px;background:linear-gradient(110deg,#ff7a2a,#ed174c);color:#fff;text-align:left;font-weight:750;box-shadow:0 6px 16px #ed174c2b}
+    .back-row{position:sticky;top:0;z-index:2;padding:10px 16px;background:#ffffffed;backdrop-filter:blur(8px)}
+    .back-btn{border:0;background:#f3f5f7;color:var(--navy);border-radius:24px;padding:10px 16px;font-weight:650}
+    .bottom-nav{position:absolute;z-index:6;left:18px;right:18px;bottom:max(12px,env(safe-area-inset-bottom));height:70px;border-radius:36px;background:#fff;box-shadow:0 5px 23px #001b2b28;display:grid;grid-template-columns:repeat(4,1fr);align-items:center;padding:5px 8px}
+    .nav-item{height:58px;border:0;background:transparent;color:#58738a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11px}.nav-item .icon{font-size:22px;line-height:1}.nav-item.active{color:var(--orange);font-weight:750}.nav-item.pay .icon{background:linear-gradient(135deg,#ff8a31,#ed174c);color:white;border-radius:50%;width:43px;height:43px;display:grid;place-items:center;margin-top:-20px;box-shadow:0 0 0 7px #fff}
+    .modal-backdrop{display:none;position:absolute;inset:0;z-index:10;background:#00192bb3;align-items:center;justify-content:center;padding:22px}.modal-backdrop.open{display:flex}.modal{width:100%;background:#fff;border-radius:24px;padding:25px 22px;box-shadow:0 20px 60px #00142644}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modal h2{font-size:23px;margin:0}.close-btn{border:0;background:#f2f4f6;width:35px;height:35px;border-radius:50%;font-size:21px;color:var(--navy)}
+    .field{display:block;margin:14px 0;color:var(--muted);font-size:13px;font-weight:650}.field input{display:block;width:100%;margin-top:7px;border:1px solid #cbd8e1;border-radius:13px;padding:13px;color:var(--navy);outline:none}.field input:focus{border-color:#f2524b;box-shadow:0 0 0 3px #f2524b20}
+    .submit-btn{width:100%;border:0;border-radius:24px;padding:14px;background:var(--navy);color:white;font-weight:750;margin-top:7px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(min-width:481px){body{padding:0}.app{border-left:1px solid #dfe4e8;border-right:1px solid #dfe4e8}}
+    @media(max-height:650px){.home-hero{min-height:190px}.summary{margin-top:20px}.bottom-nav{height:64px}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand" aria-label="Waylet">way<span>let</span></div>
+      <button class="login-btn" id="openLogin" type="button">Iniciar sesión</button>
+    </header>
+
+    <main class="views">
+      <section class="view active" id="view-home" aria-label="Inicio">
+        <div class="home-hero">
+          <div class="summary" aria-label="Resumen de cuenta">
+            <button class="summary-card" type="button"><strong>Saldo</strong><span>0 €</span></button>
+            <button class="summary-card" type="button"><strong>Cupones</strong><span>1</span></button>
+            <button class="summary-card plan" type="button" data-view="view-plan" data-event="Viewed Planes"><strong>Plan</strong><span>10 cts./l</span></button>
+          </div>
+        </div>
+        <div class="home-content">
+          <h1 class="promo-title">Promociones</h1>
+          <div class="carousel" aria-label="Promociones Waylet">
+            <img src="home-carrousel1.png" alt="Promoción: invita y gana saldo">
+            <img src="home-carrousel2.png" alt="Promoción O2">
+            <img src="home-carrousel3.png" alt="Promoción Parque Warner">
+            <img src="home-carrousel4.png" alt="Promoción Primor">
+            <img src="home-carrousel5.png" alt="Promoción tienda online Repsol">
+          </div>
+          <div class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="quick-links"><h2>Paga y genera saldo</h2><div class="quick-grid">
+            <button class="quick-tile" type="button">Repostar <span>🚘</span></button>
+            <button class="quick-tile" type="button">Recarga <span>⚡</span></button>
+            <button class="quick-tile" type="button">Aparca <span>🅿️</span></button>
+            <button class="quick-tile" type="button">Luz y gas <span>💡</span></button>
+          </div></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-plan" aria-label="Planes">
+        <div class="screen-images">
+          <img src="planes.png" alt="Tu plan y el saldo que generas">
+          <img src="planes_scroll1.png" alt="Planes de luz y luz y gas">
+          <img src="planes_scroll2.png" alt="Tarjeta Waylet y seguros">
+          <img src="planes_scroll3.png" alt="Fibra, móvil y gas">
+          <img src="planes_scroll4.png" alt="Paneles solares y beneficios">
+        </div>
+      </section>
+
+      <section class="view" id="view-beneficios" aria-label="Beneficios">
+        <div class="screen-images">
+            <img src="beneficios.png" alt="Compra, genera saldo y ahorra con Waylet">
+            <button class="airbnb-link" type="button" data-view="view-airbnb" data-event="Viewed Airbnb Detail"><span>Airbnb<br><small>Hasta un 2% de saldo</small></span><span aria-hidden="true">→</span></button>
+            <img src="beneficios_scroll1.png" alt="Planes favoritos y ofertas del mes">
+            <img src="beneficios_scroll2.png" alt="Ofertas y marcas con saldo">
+            <img src="beneficios_scroll3.png" alt="Más de 150 marcas">
+            <img src="beneficios_scroll4.png" alt="Aumenta tu ahorro y tarjetas regalo">
+        </div>
+      </section>
+
+      <section class="view" id="view-airbnb" aria-label="Detalle Airbnb">
+        <div class="back-row"><button class="back-btn" type="button" data-view="view-beneficios" data-event="Viewed Beneficios">← Atrás</button></div>
+        <img src="airbnb.png" alt="Beneficio Airbnb: hasta un 2% de saldo" style="display:block;width:100%;height:auto">
+      </section>
+
+      <section class="view" id="view-explora" aria-label="Explora">
+        <div class="screen-images"><img src="beneficios.png" alt="Explora marcas y ofertas"></div>
+      </section>
+      <section class="view" id="view-pagar" aria-label="Pagar">
+        <div style="padding:28px 22px"><h1 class="section-title">Pagar con Waylet</h1><p>Elige cómo quieres pagar y generar saldo.</p><div class="quick-grid"><button class="quick-tile">En estación <span>⛽</span></button><button class="quick-tile">En comercios <span>▣</span></button></div></div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navegación principal">
+      <button class="nav-item active" type="button" data-view="view-home" data-event="Viewed Home"><span class="icon">⌂</span>Inicio</button>
+      <button class="nav-item" type="button" data-view="view-beneficios" data-event="Viewed Beneficios"><span class="icon">🛍</span>Beneficios</button>
+      <button class="nav-item" type="button" data-view="view-explora" data-event="Viewed Explora"><span class="icon">▦</span>Explora</button>
+      <button class="nav-item pay" type="button" data-view="view-pagar" data-event="Viewed Pagar"><span class="icon">▣</span>Pagar</button>
+    </nav>
+
+    <div class="modal-backdrop" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+      <form class="modal" id="loginForm">
+        <div class="modal-head"><h2 id="loginTitle">Inicia sesión</h2><button class="close-btn" id="closeLogin" type="button" aria-label="Cerrar">×</button></div>
+        <label class="field">Email<input id="email" type="email" autocomplete="email" required placeholder="tu@email.com"></label>
+        <label class="field">Contraseña<input id="password" type="password" autocomplete="current-password" required placeholder="Tu contraseña"></label>
+        <button class="submit-btn" type="submit">Entrar</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    function trackSFMCP(eventName) {
+      console.log('SF MCP Event:', eventName);
+      // Sustituye esta simulación por la llamada de tracking configurada en Salesforce.
+      if (window.SalesforceInteractions && typeof window.SalesforceInteractions.sendEvent === 'function') {
+        window.SalesforceInteractions.sendEvent({ interaction: { name: eventName } });
+      }
+    }
+
+    function navigateTo(viewId, eventName) {
+      document.querySelectorAll('.view').forEach(function (view) {
+        view.classList.toggle('active', view.id === viewId);
+        if (view.id === viewId) view.scrollTop = 0;
+      });
+      document.querySelectorAll('.nav-item').forEach(function (item) {
+        item.classList.toggle('active', item.dataset.view === viewId || (viewId === 'view-home' && item.dataset.view === 'view-home'));
+      });
+      if (eventName) trackSFMCP(eventName);
+    }
+
+    document.querySelectorAll('[data-view]').forEach(function (button) {
+      button.addEventListener('click', function () { navigateTo(button.dataset.view, button.dataset.event); });
+    });
+
+    var modal = document.getElementById('loginModal');
+    document.getElementById('openLogin').addEventListener('click', function () { modal.classList.add('open'); document.getElementById('email').focus(); });
+    document.getElementById('closeLogin').addEventListener('click', function () { modal.classList.remove('open'); });
+    modal.addEventListener('click', function (event) { if (event.target === modal) modal.classList.remove('open'); });
+    document.getElementById('loginForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      var emailValue = document.getElementById('email').value;
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'login', email: emailValue });
+      trackSFMCP('User Logged In');
+      modal.classList.remove('open');
+    });
+  </script>
+</body>
+</html>
