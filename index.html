@@ -17,6 +17,7 @@
     .topbar{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#fff;position:absolute;inset:0 0 auto;z-index:5;border-bottom:1px solid #f0f2f4}
     .brand{font-size:27px;font-weight:850;letter-spacing:-1.5px;color:var(--navy)}.brand span{color:var(--red)}
     .login-btn{border:0;border-radius:22px;padding:10px 17px;background:linear-gradient(110deg,var(--orange),var(--red));color:#fff;font-weight:700;box-shadow:0 4px 12px #ed174c30}
+    .user-btn{width:42px;height:42px;border:0;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--navy);box-shadow:0 3px 12px #00172c1c;font-size:23px}
     .views{position:absolute;inset:72px 0 84px;overflow:hidden}
     .view{display:none;position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;background:#fff;padding-bottom:24px}
     .view::-webkit-scrollbar{display:none}.view.active{display:block}
@@ -28,7 +29,7 @@
     .home-content{padding:0 0 18px}.promo-title{font-size:23px;margin:20px 20px 15px;font-weight:750}
     .carousel{display:flex;gap:14px;overflow-x:auto;padding:0 18px 8px;scroll-snap-type:x mandatory;scrollbar-width:none}.carousel::-webkit-scrollbar{display:none}
     .carousel img{width:84%;flex:0 0 84%;height:auto;border-radius:23px;object-fit:cover;scroll-snap-align:center;border:1px solid var(--line)}
-    .dots{display:flex;justify-content:center;align-items:center;gap:8px;padding:14px}.dots i{width:7px;height:7px;border-radius:50%;background:#8aa4b8}.dots i:first-child{width:36px;border-radius:8px;background:var(--navy)}
+    .dots{display:flex;justify-content:center;align-items:center;gap:9px;padding:14px}.dots button{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:#8aa4b8;transition:width .2s,background .2s}.dots button.active{width:36px;border-radius:8px;background:var(--navy)}
     .quick-links{padding:0 18px}.quick-links h2,.section-title{font-size:21px;margin:19px 0 12px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.quick-tile{height:90px;border:1px solid var(--line);border-radius:20px;padding:16px;text-align:left;color:var(--navy);font-size:17px;font-weight:700;background:#fff}
     .quick-tile span{display:block;font-size:26px;margin-top:6px}.screen-images{padding:0}.screen-images img{display:block;width:100%;height:auto}
     .airbnb-link{display:flex;align-items:center;justify-content:space-between;width:calc(100% - 32px);margin:14px 16px;padding:15px 18px;border:0;border-radius:18px;background:linear-gradient(110deg,#ff7a2a,#ed174c);color:#fff;text-align:left;font-weight:750;box-shadow:0 6px 16px #ed174c2b}
@@ -68,7 +69,13 @@
             <img src="home-carrousel4.png" alt="Promoción Primor">
             <img src="home-carrousel5.png" alt="Promoción tienda online Repsol">
           </div>
-          <div class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="dots" aria-label="Seleccionar promoción">
+            <button class="active" type="button" aria-label="Promoción 1" aria-current="true"></button>
+            <button type="button" aria-label="Promoción 2"></button>
+            <button type="button" aria-label="Promoción 3"></button>
+            <button type="button" aria-label="Promoción 4"></button>
+            <button type="button" aria-label="Promoción 5"></button>
+          </div>
           <div class="quick-links"><h2>Paga y genera saldo</h2><div class="quick-grid">
             <button class="quick-tile" type="button">Repostar <span>🚘</span></button>
             <button class="quick-tile" type="button">Recarga <span>⚡</span></button>
@@ -153,9 +160,42 @@
     });
 
     var modal = document.getElementById('loginModal');
-    document.getElementById('openLogin').addEventListener('click', function () { modal.classList.add('open'); document.getElementById('email').focus(); });
+    var loginControl = document.getElementById('openLogin');
+    loginControl.addEventListener('click', function () {
+      if (loginControl.dataset.loggedIn === 'true') return;
+      modal.classList.add('open');
+      document.getElementById('email').focus();
+    });
     document.getElementById('closeLogin').addEventListener('click', function () { modal.classList.remove('open'); });
     modal.addEventListener('click', function (event) { if (event.target === modal) modal.classList.remove('open'); });
+
+    var carousel = document.querySelector('.carousel');
+    var promoImages = Array.from(carousel.querySelectorAll('img'));
+    var carouselDots = Array.from(document.querySelectorAll('.dots button'));
+    carouselDots.forEach(function (dot, index) {
+      dot.addEventListener('click', function () {
+        promoImages[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        setActiveDot(index);
+      });
+    });
+    function setActiveDot(index) {
+      carouselDots.forEach(function (dot, dotIndex) {
+        var active = dotIndex === index;
+        dot.classList.toggle('active', active);
+        if (active) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+    }
+    carousel.addEventListener('scroll', function () {
+      var center = carousel.getBoundingClientRect().left + carousel.clientWidth / 2;
+      var nearestIndex = promoImages.reduce(function (nearest, image, index) {
+        var imageCenter = image.getBoundingClientRect().left + image.getBoundingClientRect().width / 2;
+        var nearestCenter = promoImages[nearest].getBoundingClientRect().left + promoImages[nearest].getBoundingClientRect().width / 2;
+        return Math.abs(imageCenter - center) < Math.abs(nearestCenter - center) ? index : nearest;
+      }, 0);
+      setActiveDot(nearestIndex);
+    }, { passive: true });
+
     document.getElementById('loginForm').addEventListener('submit', function (event) {
       event.preventDefault();
       var emailValue = document.getElementById('email').value;
@@ -163,6 +203,11 @@
       window.dataLayer.push({ event: 'login', email: emailValue });
       trackSFMCP('User Logged In');
       modal.classList.remove('open');
+      loginControl.classList.remove('login-btn');
+      loginControl.classList.add('user-btn');
+      loginControl.dataset.loggedIn = 'true';
+      loginControl.setAttribute('aria-label', 'Usuario conectado');
+      loginControl.innerHTML = '<svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path></svg>';
     });
   </script>
 </body>
