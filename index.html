@@ -32,6 +32,14 @@
     .dots{display:flex;justify-content:center;align-items:center;gap:9px;padding:14px}.dots button{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:#8aa4b8;transition:width .2s,background .2s}.dots button.active{width:36px;border-radius:8px;background:var(--navy)}
     .quick-links{padding:0 18px}.quick-links h2,.section-title{font-size:21px;margin:19px 0 12px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.quick-tile{height:90px;border:1px solid var(--line);border-radius:20px;padding:16px;text-align:left;color:var(--navy);font-size:17px;font-weight:700;background:#fff}
     .quick-tile span{display:block;font-size:26px;margin-top:6px}.screen-images{padding:0}.screen-images img{display:block;width:100%;height:auto}
+    .favorite-plans{margin:14px 0 20px;padding:20px 18px 22px;border-radius:22px;background:#f5f5f7}
+    .favorite-plans h2{margin:0 0 19px;font-size:21px;line-height:1.3;font-weight:750;color:var(--navy)}
+    .brand-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:10px;row-gap:20px}
+    .brand-choice{min-width:0;padding:0;border:0;background:transparent;color:var(--navy);text-align:left}
+    .brand-icon{height:auto;aspect-ratio:1/1;border-radius:18px;display:grid;place-items:center;padding:8px;color:#fff;font-weight:800;font-size:clamp(10px,3.4vw,15px);text-align:center;line-height:1.05;overflow:hidden}
+    .brand-choice small{display:block;margin-top:7px;font-size:clamp(10px,3.1vw,14px);line-height:1.25;color:var(--navy)}
+    .brand-cinesa{background:#07588c;color:#ffe11a}.brand-warner{background:#399be0;font-size:11px}.brand-wicked{background:#050505;font-family:Georgia,serif;font-size:15px}.brand-groupon{background:#40145d;color:#29b34a}
+    .brand-airbnb{background:#ff355b;font-size:13px}.brand-hoteles{background:#171a38;font-size:12px}.brand-edreams{background:#0564a6;color:#ffd742}.brand-trip{background:#2746f1}
     .airbnb-link{display:flex;align-items:center;justify-content:space-between;width:calc(100% - 32px);margin:14px 16px;padding:15px 18px;border:0;border-radius:18px;background:linear-gradient(110deg,#ff7a2a,#ed174c);color:#fff;text-align:left;font-weight:750;box-shadow:0 6px 16px #ed174c2b}
     .back-row{position:sticky;top:0;z-index:2;padding:10px 16px;background:#ffffffed;backdrop-filter:blur(8px)}
     .back-btn{border:0;background:#f3f5f7;color:var(--navy);border-radius:24px;padding:10px 16px;font-weight:650}
@@ -97,8 +105,20 @@
 
       <section class="view" id="view-beneficios" aria-label="Beneficios">
         <div class="screen-images">
-            <img src="Beneficios1.png" alt="Compra, genera saldo y ahorra con Waylet" data-view="view-airbnb" data-event="Viewed Airbnb Detail">
-            <button class="image-action" type="button" aria-label="Ver detalle Airbnb" data-view="view-airbnb" data-event="Viewed Airbnb Detail"><img src="Beneficios2.png" alt="Planes favoritos con Airbnb: hasta un 2% de saldo"></button>
+            <img src="Beneficios1.png" alt="Compra, genera saldo y ahorra con Waylet">
+            <section class="favorite-plans" aria-labelledby="favoritePlansTitle">
+              <h2 id="favoritePlansTitle">Tus planes favoritos con saldo</h2>
+              <div class="brand-grid">
+                <div class="brand-choice"><span class="brand-icon brand-cinesa"><img src="cinesa.png" alt="Cinesa"></span><small>Hasta 4% de saldo</small></div>
+                <div class="brand-choice"><span class="brand-icon brand-warner"><img src="warner.png" alt="Warner"></span><small>3% de saldo</small></div>
+                <div class="brand-choice"><span class="brand-icon brand-wicked"><img src="wicked.png" alt="Wicked"></span><small>2% de saldo</small></div>
+                <div class="brand-choice"><span class="brand-icon brand-groupon"><img src="groupon.png" alt="Groupon"></span><small>3% de saldo</small></div>
+                <button class="brand-choice" type="button" aria-label="Abrir beneficio Airbnb" data-view="view-airbnb" data-event="Viewed Airbnb Detail"><span class="brand-icon brand-airbnb"><img src="airbnb_icon.png" alt="Airbnb"></span><small>Hasta 2% de saldo</small></button>
+                <div class="brand-choice"><span class="brand-icon brand-hoteles"><img src="hoteles.png" alt="Hoteles.com"></span><small>4,5% de saldo</small></div>
+                <div class="brand-choice"><span class="brand-icon brand-edreams"><img src="edreams.png" alt="eDremas"></span><small>Hasta 3% de saldo</small></div>
+                <div class="brand-choice"><span class="brand-icon brand-trip"><img src="trip.png" alt="Trip.com"></span><small>Hasta 2% de saldo</small></div>
+              </div>
+            </section>
             <img src="Beneficios3.png" alt="Ofertas y marcas con saldo">
             <img src="Beneficios4.png" alt="Más de 150 marcas">
             <img src="Beneficios5.png" alt="Aumenta tu ahorro y tarjetas regalo">
@@ -107,7 +127,7 @@
 
       <section class="view" id="view-airbnb" aria-label="Detalle Airbnb">
         <div class="back-row"><button class="back-btn" type="button" data-view="view-beneficios" data-event="Viewed Beneficios">← Atrás</button></div>
-        <img src="Airbnb.png" alt="Beneficio Airbnb: hasta un 2% de saldo" style="display:block;width:100%;height:auto">
+        <img src="airbnb.png" alt="Beneficio Airbnb: hasta un 2% de saldo" style="display:block;width:100%;height:auto">
       </section>
 
       <section class="view" id="view-explora" aria-label="Explora">
