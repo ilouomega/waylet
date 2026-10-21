@@ -68,6 +68,7 @@
             <button class="summary-card plan" type="button" data-view="view-plan" data-event="Viewed Planes"><strong>Plan</strong><span>10 cts./l</span></button>
           </div>
         </div>
+        <div id="home-content-placeholder" hidden></div>
         <div class="home-content">
           <h1 class="promo-title">Promociones</h1>
           <div class="carousel" aria-label="Promociones Waylet">
@@ -109,10 +110,12 @@
             <section class="favorite-plans" aria-labelledby="favoritePlansTitle">
               <h2 id="favoritePlansTitle">Tus planes favoritos con saldo</h2>
               <div class="brand-grid">
-                <div class="brand-choice"><span class="brand-icon brand-cinesa"><img src="cinesa.png" alt="Cinesa"></span><small>Hasta 4% de saldo</small></div>
-                <div class="brand-choice"><span class="brand-icon brand-warner"><img src="warner.png" alt="Warner"></span><small>3% de saldo</small></div>
-                <div class="brand-choice"><span class="brand-icon brand-wicked"><img src="wicked.png" alt="Wicked"></span><small>2% de saldo</small></div>
-                <div class="brand-choice"><span class="brand-icon brand-groupon"><img src="groupon.png" alt="Groupon"></span><small>3% de saldo</small></div>
+                <div class="brand-grid" id="favorite-plans-content" aria-label="Primera fila de planes favoritos">            
+                  <div class="brand-choice"><span class="brand-icon brand-cinesa"><img src="cinesa.png" alt="Cinesa"></span><small>Hasta 4% de saldo</small></div>
+                  <div class="brand-choice"><span class="brand-icon brand-warner"><img src="warner.png" alt="Warner"></span><small>3% de saldo</small></div>
+                  <div class="brand-choice"><span class="brand-icon brand-wicked"><img src="wicked.png" alt="Wicked"></span><small>2% de saldo</small></div>
+                  <div class="brand-choice"><span class="brand-icon brand-groupon"><img src="groupon.png" alt="Groupon"></span><small>3% de saldo</small></div>
+                </div>
                 <button class="brand-choice" type="button" aria-label="Abrir beneficio Airbnb" data-view="view-airbnb" data-event="Viewed Airbnb Detail"><span class="brand-icon brand-airbnb"><img src="airbnb_icon.png" alt="Airbnb"></span><small>Hasta 2% de saldo</small></button>
                 <div class="brand-choice"><span class="brand-icon brand-hoteles"><img src="hoteles.png" alt="Hoteles.com"></span><small>4,5% de saldo</small></div>
                 <div class="brand-choice"><span class="brand-icon brand-edreams"><img src="edreams.png" alt="eDremas"></span><small>Hasta 3% de saldo</small></div>
