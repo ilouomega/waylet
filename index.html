@@ -35,8 +35,10 @@
     .favorite-plans{margin:14px 0 20px;padding:20px 18px 22px;border-radius:22px;background:#f5f5f7}
     .favorite-plans h2{margin:0 0 19px;font-size:21px;line-height:1.3;font-weight:750;color:var(--navy)}
     .brand-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:10px;row-gap:20px}
-    .brand-choice{min-width:0;padding:0;border:0;background:transparent;color:var(--navy);text-align:left}
+    .brand-grid + .brand-grid{margin-top:20px}
+    .brand-choice{display:block;width:100%;min-width:0;padding:0;border:0;background:transparent;color:var(--navy);text-align:left}
     .brand-icon{height:auto;aspect-ratio:1/1;border-radius:18px;display:grid;place-items:center;padding:8px;color:#fff;font-weight:800;font-size:clamp(10px,3.4vw,15px);text-align:center;line-height:1.05;overflow:hidden}
+    .brand-icon img{display:block;width:100%;height:100%;object-fit:contain}
     .brand-choice small{display:block;margin-top:7px;font-size:clamp(10px,3.1vw,14px);line-height:1.25;color:var(--navy)}
     .brand-cinesa{background:#07588c;color:#ffe11a}.brand-warner{background:#399be0;font-size:11px}.brand-wicked{background:#050505;font-family:Georgia,serif;font-size:15px}.brand-groupon{background:#40145d;color:#29b34a}
     .brand-airbnb{background:#ff355b;font-size:13px}.brand-hoteles{background:#171a38;font-size:12px}.brand-edreams{background:#0564a6;color:#ffd742}.brand-trip{background:#2746f1}
@@ -109,13 +111,13 @@
             <img src="Beneficios1.png" alt="Compra, genera saldo y ahorra con Waylet">
             <section class="favorite-plans" aria-labelledby="favoritePlansTitle">
               <h2 id="favoritePlansTitle">Tus planes favoritos con saldo</h2>
-              <div class="brand-grid">
-                <div class="brand-grid" id="favorite-plans-content" aria-label="Primera fila de planes favoritos">            
-                  <div class="brand-choice"><span class="brand-icon brand-cinesa"><img src="cinesa.png" alt="Cinesa"></span><small>Hasta 4% de saldo</small></div>
-                  <div class="brand-choice"><span class="brand-icon brand-warner"><img src="warner.png" alt="Warner"></span><small>3% de saldo</small></div>
-                  <div class="brand-choice"><span class="brand-icon brand-wicked"><img src="wicked.png" alt="Wicked"></span><small>2% de saldo</small></div>
-                  <div class="brand-choice"><span class="brand-icon brand-groupon"><img src="groupon.png" alt="Groupon"></span><small>3% de saldo</small></div>
-                </div>
+              <div class="brand-grid" id="favorite-plans-content" aria-label="Primera fila de planes favoritos">
+                <div class="brand-choice"><span class="brand-icon brand-cinesa"><img src="cinesa.png" alt="Cinesa"></span><small>Hasta 4% de saldo</small></div>
+                <div class="brand-choice"><span class="brand-icon brand-warner"><img src="warner.png" alt="Warner"></span><small>3% de saldo</small></div>
+                <div class="brand-choice"><span class="brand-icon brand-wicked"><img src="wicked.png" alt="Wicked"></span><small>2% de saldo</small></div>
+                <div class="brand-choice"><span class="brand-icon brand-groupon"><img src="groupon.png" alt="Groupon"></span><small>3% de saldo</small></div>
+              </div>
+              <div class="brand-grid" aria-label="Segunda fila de planes favoritos">
                 <button class="brand-choice" type="button" aria-label="Abrir beneficio Airbnb" data-view="view-airbnb" data-event="Viewed Airbnb Detail"><span class="brand-icon brand-airbnb"><img src="airbnb_icon.png" alt="Airbnb"></span><small>Hasta 2% de saldo</small></button>
                 <div class="brand-choice"><span class="brand-icon brand-hoteles"><img src="hoteles.png" alt="Hoteles.com"></span><small>4,5% de saldo</small></div>
                 <div class="brand-choice"><span class="brand-icon brand-edreams"><img src="edreams.png" alt="eDremas"></span><small>Hasta 3% de saldo</small></div>
