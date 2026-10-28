@@ -31,7 +31,8 @@
     #home-content-placeholder button{display:block;width:100%;padding:0;border:0;background:transparent;line-height:0}
     #home-content-placeholder img{display:block;width:100%;height:auto;border-radius:18px}
     .carousel{display:flex;gap:14px;overflow-x:auto;padding:0 18px 8px;scroll-snap-type:x mandatory;scrollbar-width:none}.carousel::-webkit-scrollbar{display:none}
-    .carousel img{width:84%;flex:0 0 84%;height:auto;border-radius:23px;object-fit:cover;scroll-snap-align:center;border:1px solid var(--line)}
+    .carousel .promotion-card{flex:0 0 84%;scroll-snap-align:center;cursor:pointer}
+    .carousel .promotion-card img{display:block;width:100%;height:auto;border-radius:23px;object-fit:cover;border:1px solid var(--line)}
     .dots{display:flex;justify-content:center;align-items:center;gap:9px;padding:14px}.dots button{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:#8aa4b8;transition:width .2s,background .2s}.dots button.active{width:36px;border-radius:8px;background:var(--navy)}
     .quick-links{padding:0 18px}.quick-links h2,.section-title{font-size:21px;margin:19px 0 12px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.quick-tile{height:90px;border:1px solid var(--line);border-radius:20px;padding:16px;text-align:left;color:var(--navy);font-size:17px;font-weight:700;background:#fff}
     .quick-tile span{display:block;font-size:26px;margin-top:6px}.screen-images{padding:0}.screen-images img{display:block;width:100%;height:auto}
@@ -74,18 +75,20 @@
           </div>
         </div>
         <div id="home-content-placeholder">
-          <button type="button" aria-label="Ver planes Waylet" data-view="view-plan" data-event="Viewed Planes">
-            <img src="promo_inicio.jpeg" alt="Descubre los planes Waylet">
-          </button>
+          <div id="promo-inicio" data-promotion-id="promo-inicio">
+            <button type="button" aria-label="Ver planes Waylet" data-view="view-plan" data-event="Viewed Planes">
+              <img src="promo_inicio.jpeg" alt="Descubre los planes Waylet">
+            </button>
+          </div>
         </div>
         <div class="home-content">
           <h1 class="promo-title">Promociones</h1>
           <div class="carousel" aria-label="Promociones Waylet">
-            <img src="Promocion1.png" alt="Promoción: invita y gana saldo">
-            <img src="Promocion2.png" alt="Promoción O2">
-            <img src="Promocion3.png" alt="Promoción Parque Warner">
-            <img src="Promocion4.png" alt="Promoción Primor">
-            <img src="Promocion5.png" alt="Promoción tienda online Repsol">
+            <div class="promotion-card" id="promo-home-1" data-promotion-id="promo-home-1" role="button" tabindex="0" aria-label="Promoción 1: invita y gana saldo"><img src="Promocion1.png" alt="Promoción: invita y gana saldo"></div>
+            <div class="promotion-card" id="promo-home-2" data-promotion-id="promo-home-2" role="button" tabindex="0" aria-label="Promoción 2: O2"><img src="Promocion2.png" alt="Promoción O2"></div>
+            <div class="promotion-card" id="promo-home-3" data-promotion-id="promo-home-3" role="button" tabindex="0" aria-label="Promoción 3: Parque Warner"><img src="Promocion3.png" alt="Promoción Parque Warner"></div>
+            <div class="promotion-card" id="promo-home-4" data-promotion-id="promo-home-4" role="button" tabindex="0" aria-label="Promoción 4: Primor"><img src="Promocion4.png" alt="Promoción Primor"></div>
+            <div class="promotion-card" id="promo-home-5" data-promotion-id="promo-home-5" role="button" tabindex="0" aria-label="Promoción 5: tienda online Repsol"><img src="Promocion5.png" alt="Promoción tienda online Repsol"></div>
           </div>
           <div class="dots" aria-label="Seleccionar promoción">
             <button class="active" type="button" aria-label="Promoción 1" aria-current="true"></button>
@@ -193,6 +196,24 @@
 
     document.querySelectorAll('[data-view]').forEach(function (button) {
       button.addEventListener('click', function () { navigateTo(button.dataset.view, button.dataset.event); });
+    });
+
+    document.querySelectorAll('[data-promotion-id]').forEach(function (promotion) {
+      function recordPromotionClick() {
+        var promotionId = promotion.dataset.promotionId;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'promotion_click', promotion_id: promotionId });
+        trackSFMCP('Promotion Clicked: ' + promotionId);
+      }
+      promotion.addEventListener('click', recordPromotionClick);
+      if (promotion.getAttribute('role') === 'button') {
+        promotion.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            recordPromotionClick();
+          }
+        });
+      }
     });
 
     var modal = document.getElementById('loginModal');
