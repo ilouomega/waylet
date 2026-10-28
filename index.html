@@ -18,6 +18,11 @@
     .brand{font-size:27px;font-weight:850;letter-spacing:-1.5px;color:var(--navy)}.brand span{color:var(--red)}
     .login-btn{border:0;border-radius:22px;padding:10px 17px;background:linear-gradient(110deg,var(--orange),var(--red));color:#fff;font-weight:700;box-shadow:0 4px 12px #ed174c30}
     .user-btn{width:42px;height:42px;border:0;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--navy);box-shadow:0 3px 12px #00172c1c;font-size:23px}
+    .account-area{position:relative}
+    .user-menu{display:none;position:absolute;right:0;top:52px;min-width:160px;padding:7px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 24px #001b2b25}
+    .user-menu.open{display:block}
+    .logout-btn{width:100%;padding:10px 12px;border:0;border-radius:9px;background:#fff;color:var(--navy);text-align:left;font-weight:650}
+    .logout-btn:hover{background:#f5f5f7}
     .views{position:absolute;inset:72px 0 84px;overflow:hidden}
     .view{display:none;position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;background:#fff;padding-bottom:24px}
     .view::-webkit-scrollbar{display:none}.view.active{display:block}
@@ -62,7 +67,12 @@
   <div class="app">
     <header class="topbar">
       <div class="brand" aria-label="Waylet">way<span>let</span></div>
-      <button class="login-btn" id="openLogin" type="button">Iniciar sesión</button>
+      <div class="account-area" id="accountArea">
+        <button class="login-btn" id="openLogin" type="button">Iniciar sesión</button>
+        <div class="user-menu" id="userMenu">
+          <button class="logout-btn" id="logoutButton" type="button">Cerrar sesión</button>
+        </div>
+      </div>
     </header>
 
     <main class="views">
@@ -218,10 +228,38 @@
 
     var modal = document.getElementById('loginModal');
     var loginControl = document.getElementById('openLogin');
+    var userMenu = document.getElementById('userMenu');
+    var userIcon = '<svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path></svg>';
+    function setLoggedIn(isLoggedIn) {
+      loginControl.classList.toggle('login-btn', !isLoggedIn);
+      loginControl.classList.toggle('user-btn', isLoggedIn);
+      loginControl.dataset.loggedIn = String(isLoggedIn);
+      loginControl.setAttribute('aria-label', isLoggedIn ? 'Cuenta de usuario' : 'Iniciar sesión');
+      loginControl.innerHTML = isLoggedIn ? userIcon : 'Iniciar sesión';
+    }
+    try {
+      setLoggedIn(localStorage.getItem('wayletLoggedIn') === 'true');
+    } catch (error) {
+      setLoggedIn(false);
+    }
     loginControl.addEventListener('click', function () {
-      if (loginControl.dataset.loggedIn === 'true') return;
+      if (loginControl.dataset.loggedIn === 'true') {
+        userMenu.classList.toggle('open');
+        return;
+      }
       modal.classList.add('open');
       document.getElementById('email').focus();
+    });
+    document.getElementById('logoutButton').addEventListener('click', function () {
+      try { localStorage.removeItem('wayletLoggedIn'); } catch (error) {}
+      setLoggedIn(false);
+      userMenu.classList.remove('open');
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'logout' });
+      trackSFMCP('User Logged Out');
+    });
+    document.addEventListener('click', function (event) {
+      if (!document.getElementById('accountArea').contains(event.target)) userMenu.classList.remove('open');
     });
     document.getElementById('closeLogin').addEventListener('click', function () { modal.classList.remove('open'); });
     modal.addEventListener('click', function (event) { if (event.target === modal) modal.classList.remove('open'); });
@@ -260,11 +298,8 @@
       window.dataLayer.push({ event: 'login', email: emailValue });
       trackSFMCP('User Logged In');
       modal.classList.remove('open');
-      loginControl.classList.remove('login-btn');
-      loginControl.classList.add('user-btn');
-      loginControl.dataset.loggedIn = 'true';
-      loginControl.setAttribute('aria-label', 'Usuario conectado');
-      loginControl.innerHTML = '<svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path></svg>';
+      try { localStorage.setItem('wayletLoggedIn', 'true'); } catch (error) {}
+      setLoggedIn(true);
     });
   </script>
 </body>
