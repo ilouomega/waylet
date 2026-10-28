@@ -27,6 +27,9 @@
     .summary-card strong{display:block;font-size:15px;font-weight:600;margin-bottom:12px}.summary-card span{font-size:23px;font-weight:500;white-space:nowrap}
     .summary-card.plan{background:var(--navy);color:#fff}
     .home-content{padding:0 0 18px}.promo-title{font-size:23px;margin:20px 20px 15px;font-weight:750}
+    #home-content-placeholder{padding:0 18px;margin:8px 0 16px}
+    #home-content-placeholder button{display:block;width:100%;padding:0;border:0;background:transparent;line-height:0}
+    #home-content-placeholder img{display:block;width:100%;height:auto;border-radius:18px}
     .carousel{display:flex;gap:14px;overflow-x:auto;padding:0 18px 8px;scroll-snap-type:x mandatory;scrollbar-width:none}.carousel::-webkit-scrollbar{display:none}
     .carousel img{width:84%;flex:0 0 84%;height:auto;border-radius:23px;object-fit:cover;scroll-snap-align:center;border:1px solid var(--line)}
     .dots{display:flex;justify-content:center;align-items:center;gap:9px;padding:14px}.dots button{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:#8aa4b8;transition:width .2s,background .2s}.dots button.active{width:36px;border-radius:8px;background:var(--navy)}
@@ -70,7 +73,11 @@
             <button class="summary-card plan" type="button" data-view="view-plan" data-event="Viewed Planes"><strong>Plan</strong><span>10 cts./l</span></button>
           </div>
         </div>
-        <div id="home-content-placeholder" hidden></div>
+        <div id="home-content-placeholder">
+          <button type="button" aria-label="Ver planes Waylet" data-view="view-plan" data-event="Viewed Planes">
+            <img src="promo_inicio.png" alt="Descubre los planes Waylet">
+          </button>
+        </div>
         <div class="home-content">
           <h1 class="promo-title">Promociones</h1>
           <div class="carousel" aria-label="Promociones Waylet">
